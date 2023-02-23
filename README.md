@@ -2,13 +2,11 @@
 
 ### Purpose of Analysis
 
-Credit risk poses a classification problem that’s inherently
-imbalanced. The reason is that healthy loans easily
-outnumber risky loans. This analysis uses various techniques to train and evaluate models with imbalanced classes. The dataset used consists of historical lending activity from a peer-to-peer lending services company.  These data will be used to build a model that can identify the creditworthiness of borrowers.
+Credit risk poses a classification problem that’s inherently imbalanced. The reason is that healthy loans easily outnumber risky loans. This analysis uses various techniques to train and evaluate models with imbalanced classes. The dataset used consists of historical lending activity from a peer-to-peer lending services company.  These data will be used to build a model that can identify the creditworthiness of borrowers.
 
 ### Data Used
 
-The lending_data.csv contains data that provides the following information:
+The *lending_data.csv* provides the following data:
 
 * loan_size
 * interest_rate
@@ -19,7 +17,7 @@ The lending_data.csv contains data that provides the following information:
 * total_debt
 * loan_status
 
-loan_status is the target variable the model is attempting to predict accurately, i.e., the 'y'.
+'loan_status' is the target variable the model is attempting to predict accurately, i.e., the 'y'.
 
 It is important to note that a value of '0' in the “loan_status” column means that the loan is 'healthy'. A value of '1' means that the loan has a 'high-risk' of defaulting.
 
@@ -29,13 +27,13 @@ All other features (or independent variables) are data that provide information 
 
 For the orginal dataset, the 'y' variable value_counts show the following distribution:
 
-![Original_valcount]()
+![Original_valcount](https://github.com/KSohi-max/P2P_Credit_Risk/blob/main/Images/original_valcount.png)
 
-As you can see, the number of cases where loan_status value is '1' or 'high-risk' of defaulting is only 2,500 while number of cases where loan_status value is '0' or 'healthy' is 75,036.  Based solely on this information, it is evident that there is a significant imbalance in the dataset being used.
+As you can see, the number of cases where loan_status value is '1' or 'high-risk' of defaulting is only 2,500 while number of cases where loan_status value is '0' or 'healthy' is 75,036.  Based solely on this information, it is evident that there is a significant imbalance in the dataset being used to identify 'high-risk loans'.
 
 After oversampling was applied to the dataset using RandomOverSampling(), the following distribution was observed:
 
-![ROX_valcount]()
+![ROS_valcount](https://github.com/KSohi-max/P2P_Credit_Risk/blob/main/Images/ROS_valcount.png)
 
 For each loan_status of '0' or 'healthy' loans and '1' or 'high-risk of default', 56,271 data rows were created to equalize the imbalance in the dataset.  The goal is to allow the model to 'learn' from each of the two cases/classes so that it can statistically predict a 'high-risk default' occurence based on the features input data (X).
 
@@ -53,9 +51,9 @@ Using the X_test data that was split, the predicted 'y' or 'y_pred' was generate
 
 The original dataset was used to resample the training and testing data using [`RandomOverSampler`](https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.RandomOverSampler.html). 
 
-The `RandomOverSampler` was instantiated and a new data split call X_oversampled, y_oversampled was generated to remove the imbalance in the dataset.
+The `RandomOverSampler` was instantiated and a new data split called X_oversampled, y_oversampled was generated to attempt to remove the imbalance in the training dataset.
 
-The new 'oversample' data was used to re-traing the `LogisticRegression` model once again. And similar to the orginal process, the 'X_test' data was used to generate 'y_pred_oversampled' predictions using the updated re-trained model. To validate the 'y_pred_oversampled', the actual value or 'y_test' was used to determine how many of the predicted values matched the actual values.
+The new 'oversample' data was used to re-train the `LogisticRegression` model once again. And similar to the orginal process, the 'X_test' data was used to generate 'y_pred_oversampled' predictions using the updated re-trained model. To validate the 'y_pred_oversampled', the actual value or 'y_test' was used to determine how many of the predicted values matched the actual values.
 
 ### Methods Used
 
@@ -71,9 +69,9 @@ The new 'oversample' data was used to re-traing the `LogisticRegression` model o
 
 The following image illustrates Accuracy, Prediction and Recall scores:
 
-!['Machine Learing Model_Original Dataset']()
+!['Machine Learing Model_Original Dataset'](https://github.com/KSohi-max/P2P_Credit_Risk/blob/main/Images/results_orginal%20dataset.png)
 
-Accuracy is ~95% or the model that uses original dataset is able to predict loan_status with 95% accuracy based on the validation test.
+Accuracy is ~95% based on the validation test using original dataset.
 
 Precision or the proportion of positive calls that were correct (Precision = TP/(TP + FP)) is: For '0' or 'healthy loans' is 1.00 and for '1' or 'high-risk loans' 0.85. 
 
@@ -83,9 +81,9 @@ Recall or the proportion of truly positive samples that were correct (Recall = T
 
 The following shows the Accuracy, Prediction and Recall scores:
 
-!['Machine Learing Model_RandomOverSampled']()
+!['Machine Learing Model_RandomOverSampled'](https://github.com/KSohi-max/P2P_Credit_Risk/blob/main/Images/results_ROS%20dataset.png)
 
-Accuracy is ~99% or the model that uses original dataset is able to predict loan_status with 95% accuracy based on the validation test.
+Accuracy is ~99% based on the validation test.
 
 Precision is: For '0' or 'healthy loans' is 1.00 and for '1' or 'high-risk loans' 0.85. 
 
@@ -95,11 +93,11 @@ Recall is: For '0' or 'healthy loans' is 0.99 and for '1' or 'high-risk loans' 0
 
 Based solely on Accuracy Score the model with oversampled dataset 'seems' to perform the best at 99%. Precision and Recall are essentially the same for models trained on orginal and oversampled datasets.
 
-From a business perspective, it is far more important to predict the 'high-risk loans' class than the 'healthy loans' class. The `RandomOverSampler` functions is sampling from too small a dataset, namely 2,500 rows to 56,271 and so there is likely a lot of repetition of same datapoints in the training dataset.  This leads to the model learning from duplicated cases or data.  This is the reason for very high Accuracy Score for both models (95% v. 99%).
+From a business perspective, it is far more important to predict the 'high-risk loans' class than the 'healthy loans' class. The `RandomOverSampler` functions is sampling from too small a dataset, namely 2,500 rows to 56,271 and so there is likely a lot of repetition of same datapoints in the training dataset from the original 2,500 data points.  This leads to the model learning from same data points without any variation.  This is the reason for very high Accuracy Score for both models (Original - 95% v. Oversampled - 99%).
 
-Given that there aren't enough varied cases of 'high-risk loans' in the dataset to train a model sufficiently to predict the probability of occurence, I wouldn't recommend using either of the models. 
+Given that there aren't enough varied cases of 'high-risk loans' in the dataset to train a model sufficiently to predict the probability of occurence, I wouldn't recommend using either of the models.
 
-My recommendation would be to further explore the opportunity to:
+My recommendation would be to explore the opportunity to:
 
-* continue to collect additional data for 'high-risk loans' for the model from the company
+* collect additional data for 'high-risk loans' for the model from the company
 * generate additional cases using Sythetic Sampling (KNN) to simulate characteristics of borrower's who default and add to original dataset
